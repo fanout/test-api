@@ -48,7 +48,8 @@ connected (press CTRL+C to quit)
 
 Subscribe a callback URL:
 ```
-curl -i -d 'url=http://example.com/path' http://86f32743.fanoutcdn.com/messages/subscriptions/
+curl -i -d 'url=http://example.com/path' \
+    http://86f32743.fanoutcdn.com/messages/subscriptions/
 
 HTTP/1.1 201 CREATED
 Server: gunicorn/19.3.0
