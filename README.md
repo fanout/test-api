@@ -1,7 +1,7 @@
 Test API
 ========
 
-This a minimal backend to demonstrate how to implement realtime API endpoints with Fanout. The demo supports three delivery mechanisms:
+This a minimal Django backend to demonstrate how to implement realtime API endpoints with Fanout. The demo supports three delivery mechanisms:
 
 * HTTP streaming
 * WebSockets
@@ -18,7 +18,18 @@ There is also a WebSocket endpoint:
 
 * `/messages/`: Connect to this endpoint via WebSocket to listen for new messages. The first message received will be a welcome message. If you send a message to the server, it will be broadcasted to all listeners (same as the `/send/` HTTP endpoint).
 
-There is an instance of the API running at `86f32743.fanoutcdn.com` to easily try it out.
+Setup
+-----
+
+There is an instance of the API running at `86f32743.fanoutcdn.com` to easily try it out. The Django app is running on Heroku, which is then fronted by the Fanout cloud service.
+
+If you want to set it up yourself, be sure to set the following environment variables:
+
+* `GRIP_URL`: A URL to describe the GRIP configuration.
+* `FANOUT_REALM` (optional, needed for Webhooks).
+* `FANOUT_KEY` (optional, needed for Webhooks).
+
+The Fanout cloud is needed for Webhooks. For HTTP streaming and WebSockets, you can use either the Fanout cloud or your own instance of Pushpin.
 
 Examples
 --------
