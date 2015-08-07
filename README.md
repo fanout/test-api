@@ -1,7 +1,7 @@
 Test API
 ========
 
-This is a minimal Django backend to demonstrate how to implement realtime API endpoints with Pushpin/Fanout. The demo supports three delivery mechanisms:
+This is a minimal Django backend to demonstrate how to implement realtime API endpoints with Pushpin/Fanout. The demo supports four delivery mechanisms:
 
 * HTTP streaming
 * HTTP long-polling
