@@ -4,12 +4,15 @@ Test API
 This is a minimal Django backend to demonstrate how to implement realtime API endpoints with Pushpin/Fanout. The demo supports three delivery mechanisms:
 
 * HTTP streaming
+* HTTP long-polling
 * WebSockets
 * Webhooks
 
 The following HTTP endpoints are available:
 
 * GET `/messages/`: Never ending HTTP response that streams messages as lines. The first line will be a welcome message.
+* GET `/messages/last/`: Fetch the most recent message value. Pass the `If-None-Match` header to check for changes. Additionally a `?wait=true` query parameter
+to have the request long-poll if the value hasn't changed yet.
 * POST `/messages/subscriptions/`: Subscribe a callback URL to new messages. Expects a form-encoded body with a `url` parameter set to the callback URL. The response will contain a registration ID that can be used for deletion.
 * DELETE `/messages/subscriptions/{id}/`: Unsubscribe a callback URL based on the registration ID.
 * POST `/send/`: Broadcast a text message to all listeners. Expects a form-encoded body with a `message` parameter set to a string to send.
@@ -46,6 +49,12 @@ Transfer-Encoding: chunked
 Connection: Transfer-Encoding
 
 Welcome to the Test API
+```
+
+Open HTTP long-poll:
+```
+curl -i -H 'If-None-Match: "etag"' \
+    http://86f32743.fanoutcdn.com/messages/last/?wait=true
 ```
 
 Open WebSocket connection:
