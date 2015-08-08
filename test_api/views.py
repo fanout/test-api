@@ -91,7 +91,7 @@ def messages_subscriptions(request):
     if request.method == 'POST':
         url = request.POST['url']
 
-        # Save the URL to local database so we can refer to it by ID.
+        # Save the URL to the local database so we can refer to it by ID.
         r = CallbackRegistration(url=url)
         r.save()
 
@@ -129,15 +129,20 @@ def send(request):
         return HttpResponseNotAllowed(['POST'])
 
 def publish_message(message):
-    # Save the current message to the database, overwriting the previous.
+    # Get the most recent sent message from the database (empty string by
+    #   default).
     m = LastMessage.get_only()
+
+    # Generate ETags of the previous and current messages, using the same
+    #   algorithm as the GET handler.
+    etag = '"%s"' % hashlib.md5(message).hexdigest()
+    prev_etag = '"%s"' % hashlib.md5(m.text).hexdigest()
+
+    # Save the current message to the database, overwriting the previous.
     m.text = message
     m.save()
 
-    # Generate a simple ETag, using the same algorithm as the GET handler.
-    etag = '"%s"' % hashlib.md5(message).hexdigest()
-
-    # Also prepare headers for the HTTP request and HTTP response delivery
+    # Prepare headers for the HTTP request and HTTP response delivery
     #   mechanisms.
     headers = {'Content-Type': 'text/plain', 'ETag': etag}
 
@@ -151,4 +156,4 @@ def publish_message(message):
         body=message + '\n'))
 
     # Send to the proxy and/or Fanout.
-    publish('messages', formats)
+    publish('messages', formats, id=etag, prev_id=prev_etag)
