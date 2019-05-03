@@ -7,7 +7,7 @@ django-grip==1.6.1
 django-toolbelt==0.0.1
 gripcontrol==2.4.2
 gunicorn==19.3.0
-psycopg2==2.6.1
+psycopg2==2.8.2
 pubcontrol==2.2.7
 requests==2.7.0
 static3==0.6.1
